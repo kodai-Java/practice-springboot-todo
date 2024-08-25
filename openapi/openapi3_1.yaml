@@ -1,0 +1,166 @@
+openapi: 3.1.0
+info:
+  version: 0.1.0
+  title: Swagger todo - OpenAPI 3.1
+  description: |-
+    ToDoアプリのバックエンドAPIの定義です。
+
+    Some useful links:
+    - [Todo backend repository](https://github.com/kodai-Java/practice-springboot-todo)
+
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: todo
+    description: ToDoのAPI
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /todo:
+    get:
+      tags:
+        - todo
+      summary: ToDo一覧取得
+      description: ToDo一覧取得
+      operationId: updatePet
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Todo not found
+        '422':
+          description: Validation exception
+    post:
+      tags:
+        - todo
+      summary: ToDo追加
+      description: ToDo追加
+      operationId: addTodo
+      requestBody:
+        description: 新規ToDo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /todo/{id}:
+    get:
+      tags:
+        - todo
+      summary: 指定のToDo取得
+      description: 指定のToDo取得
+      operationId: getTodoById
+      parameters:
+        - name: id
+          in: path
+          description: todoのIDを渡す
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Todo not found
+    put:
+      tags:
+        - todo
+      summary: ToDoの内容を更新する
+      description: Returns a single pet
+      operationId: putTodoById
+      parameters:
+        - name: id
+          in: path
+          description: TodoのIDを渡す
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    delete:
+      tags:
+        - todo
+      summary: ToDoを消す
+      description: ToDoを消す
+      operationId: deleteTodo
+      parameters:
+        - name: api_key
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: TodoのIDを渡す
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid todo value
+
+components:
+  schemas:
+    Todo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          examples: [10]
+        title:
+          type: string
+          examples: [タイトル]
+        content:
+          type: string
+          examples: [内容]
+        createdAt:
+          type: string
+          format: date-time
+        progressStatus:
+          type: string
+          description: Progress Status
+          examples: [inprogress]
+          enum:
+            - todo
+            - inprogress
+            - done
