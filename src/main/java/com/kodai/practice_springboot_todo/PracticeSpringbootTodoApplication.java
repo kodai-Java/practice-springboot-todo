@@ -9,5 +9,4 @@ public class PracticeSpringbootTodoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PracticeSpringbootTodoApplication.class, args);
 	}
-
 }
